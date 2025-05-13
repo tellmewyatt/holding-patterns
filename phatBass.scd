@@ -53,6 +53,22 @@ SynthDef(\marimba, { | out = 0, amp = 0.2, pan = 0.5, freq=440, trig=1 |
 	sig = BPF.ar(sig, 440) + BPF.ar(sig, 800);
 	Out.ar(out, FreeVerb.ar(Pan2.ar(sig, pan, amp)));
 }).add;
+SynthDef(\drumstick, { | out = 0, trig = 1, amp = 0.4 |
+	Out.ar(out, EnvGen.ar(
+		Env.perc(
+			0.001 * Rand(1, 2),
+			0.001 * Rand(1, 2)),
+		trig, doneAction: 2) * amp * 0.5)
+}).add;
+SynthDef(\tom, { | out = 0, in, pan, freq = 100, freqSpread = 5000, decayTime = 0.4, gate=1 |
+	var input = In.ar(in);
+	var env = EnvGen.kr(Env.asr(0.0, 1, 0.1), gate, doneAction: 2);
+	var sig = Ringz.ar(input, freq + (Rand(0, 1 ! 70) * freqSpread), decayTime).mean * env;
+	//sig = sig + input;
+	sig = PanAz.ar(s.options.numOutputBusChannels, sig, pan, orientation: 0);
+	Out.ar(out, sig);
+
+}).add;
 /*SynthDef(\bell, { | out = 0, pan = 0, amp = 0.2, freq=200, trig=1, decayTime=4 |
 var env = EnvGen.kr(Env([0, 1, 1, 0], [0, decayTime+0.1,0.1]), trig, doneAction: 2);
 var sig = Mix.ar(Ringz.ar(EnvGen.ar(Env.perc(0.01, 0.01), trig), ExpRand(freq, freq+ 2000 ! 4), decayTime, 0.1 ));
@@ -134,6 +150,27 @@ x  = Synth(\phatBass, [\freq, 40.midicps])
 x.release
 x = Synth(\introSustain, [\freq, 60.midicps, \combAmount, 0.4])
 x.release;
+
+(~tomBuses = 20.collect({ Bus.audio(s, 1) });
+	~drumGroup = Group(s, \addToHead);
+	~stickGroup = Group(s, \addToHead);
+	~ig = Group(s, \addToHead);
+~createDrums.(13);
+~toms.collect { | tom | tom.set(\freq, rrand(20, 4000)) };
+~toms.collect { | tom | tom.set(\freqSpread, rrand(400, 3000)) };
+~toms.collect { | tom | tom.set(\pan, rrand(-1.0, 1)) };
+)
+~toms.collect { | tom | tom.set(\amp, 0.8) }
+Synth(\drumstick, [\out, ]);
+(Pdef(\section2,
+	Pbind(
+		\instrument, \drumstick,
+		\out, Pfunc({ ~tomBuses.[rrand(0, 12)] }),
+		\dur, 0.25,
+		\amp, 0.3
+
+	)
+).play;)
 (
 Task({
 	// Opening Phrase
