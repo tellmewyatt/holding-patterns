@@ -14,6 +14,7 @@ Pdef(\section2, Pseq([
 	Ppar([
 		Pbind(
 			\instrument, \canDrum,
+			\bufnum, ~buffers.cansRight,
 			\attack, 0.01,
 			\release, 1,
 			\pan, Pwhite(-1, 1.0),
@@ -32,6 +33,7 @@ Pdef(\section2, Pseq([
 		),
 		Pbind(
 			\instrument, \canBass,
+			\bufnum, ~buffers.cansRight,
 			\freq, Pseq([70, 90, 120, 100 ]),
 			\dur, Pseq([5, 5, 4, 4, 4]),
 		)
@@ -39,6 +41,7 @@ Pdef(\section2, Pseq([
 	Ppar([
 		Pbind(
 			\instrument, \canDrum,
+			\bufnum, ~buffers.cansRight,
 			\attack, 0.01,
 			\release, 1,
 			\pan, Pseg(
