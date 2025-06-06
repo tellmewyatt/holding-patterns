@@ -36,7 +36,8 @@ SynthDef(\ride, { |out = 0, amp = 0.2, pan = 0.5, bandFreq=8000, releaseTime = 1
 	sig = sig + CombC.ar(sig, 0.1, 0.1, 10);
 	Out.ar(out, Pan2.ar(sig, pan, amp * env))
 }).add;
-SynthDef(\cansBackground, { | out = 0, bufnums = #[4,5], cutoff = 100 |
+SynthDef(\cansBackground, { | out = 0, bufnums = #[4,5], cutoff = 100, gate=1 |
+	var env = EnvGen.kr(Env.asr(0.01, 1, 0.01), gate, doneAction: 2);
 	var sig = bufnums.collect { | bufnum |
 		var sig = GrainBuf.ar(1,
 			Impulse.kr(SinOsc.kr(0.1).range(10, 40)), // triggger
@@ -50,7 +51,7 @@ SynthDef(\cansBackground, { | out = 0, bufnums = #[4,5], cutoff = 100 |
 		sig = Compander.ar(sig, sig, 0.25, 1, 0.1);
 		sig = LPF.ar(sig, cutoff);
 	};
-	Out.ar(out, sig);
+	Out.ar(out, sig * env);
 }).add;
 SynthDef(\canBass, { | dur, freq = 70, amp =  0.2, bufnum |
 	var env = EnvGen.kr(Env.perc(0.001, dur), doneAction: 2);

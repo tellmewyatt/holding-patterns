@@ -14,7 +14,7 @@ Pdef(\section2, Pseq([
 	Ppar([
 		Pbind(
 			\instrument, \canDrum,
-			\bufnum, ~buffers.cansRight,
+			\bufnum, ~buffers.cansLeft,
 			\attack, 0.01,
 			\release, 1,
 			\pan, Pwhite(-1, 1.0),
@@ -33,7 +33,7 @@ Pdef(\section2, Pseq([
 		),
 		Pbind(
 			\instrument, \canBass,
-			\bufnum, ~buffers.cansRight,
+			\bufnum, ~buffers.cansLeft,
 			\freq, Pseq([70, 90, 120, 100 ]),
 			\dur, Pseq([5, 5, 4, 4, 4]),
 		)
@@ -41,7 +41,7 @@ Pdef(\section2, Pseq([
 	Ppar([
 		Pbind(
 			\instrument, \canDrum,
-			\bufnum, ~buffers.cansRight,
+			\bufnum, ~buffers.cansLeft,
 			\attack, 0.01,
 			\release, 1,
 			\pan, Pseg(
@@ -63,13 +63,20 @@ Pdef(\section2, Pseq([
 			\dur, Pseq([
 				Pseq([5], 3),
 				Pseq([[1.5, 0.5]!2, 1].flat, 4),
-				Pseq(1!5, 2),
-				Pseq([2], 4)
+				Pseq(1!5, 2)
 			]),
 			\freq, 100,
 			\amp, 0.2,
 			\release, 0.4
 		)
-	])
+	]),
+	Pbind(
+		\instrument, \introSwoop,
+		\bufnum, ~buffers.creepyVocals,
+		\dur, Pseq([3,2], 4),
+		\release, Pseq([2 / TempoClock.tempo, ], 8),
+		\freq, Pseq([\rest, 40], 4),
+		\amp, 1
+	)
 ])
 )

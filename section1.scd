@@ -55,11 +55,6 @@ Pdef(\section1,
 					Pseq([0.125], 16)
 				]),
 				\pan, Pseq([-0.25, 0.25], inf)
-			),
-			Pbind(
-				\instrument, \introSwoop,
-				\bufnum, ~buffers.creepyVocals,
-				\dur, Prand([0.25, 1, 2, 10], inf)
 			)
 		])
 	])
